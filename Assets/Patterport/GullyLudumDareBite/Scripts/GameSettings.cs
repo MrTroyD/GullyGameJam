@@ -7,4 +7,5 @@ using UnityEngine;
 public class GameSettings : ScriptableObject
 {
     public bool debug = true;
+    public int seed = 9291979;
 }

@@ -12,11 +12,29 @@ public class PlayerControl : MonoBehaviour
 
 
     Vector3 _velocity;
+    Vector2 _direction;
 
     [SerializeField]float _moveSpeed = 5f; // Do what feeeels right
+
+    public Vector3 velocity
+    {
+        get { return this._velocity; }
+    }
+
     void Awake()
     {
         
+    }
+
+    public void EnableControls()
+    {
+        this._playerInput.enabled = true;
+    }
+
+    public void DisableControls()
+    {
+            this._direction = Vector3.zero;
+        this._playerInput.enabled = false;
     }
 
     private void OnEnable()
@@ -28,12 +46,32 @@ public class PlayerControl : MonoBehaviour
 
     }
 
-    Vector2 _direction;
+    private void OnDisable()
+    {
+        if (this._gameControls == null) return;
+        try
+        {
+            this._gameControls.PlayerActions.Movement.performed -= Movement;
+            this._gameControls.PlayerActions.Movement.canceled -= Movement;
+            this._gameControls.PlayerActions.Disable();
+        }
+        catch(System.Exception e)
+        {
+
+        }
+
+        this._gameControls = null;
+    }
+
     public void Movement(InputAction.CallbackContext context)
     {
-        print("movement");
-        this._direction = context.ReadValue<Vector2>();
+        if (!this._playerInput.enabled)
+        {
+            this._direction = Vector3.zero;
+            return;
+        }
 
+        this._direction = context.ReadValue<Vector2>();
     }
 
         

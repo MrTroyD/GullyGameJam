@@ -13,6 +13,9 @@ public class Player:MonoBehaviour
     [SerializeField] GullyGameManager _gameManager;
 
     [SerializeField]LayerMask _queryMask;
+    [SerializeField] PlayerControl _playerControls;
+
+    float _rotationSpeed = 360f;
 
     private void Update()
     {
@@ -28,6 +31,24 @@ public class Player:MonoBehaviour
                     break;
             }
         }
+
+
+        if (this._playerControls.velocity != Vector3.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(this._playerControls.velocity, Vector3.up);
+            this._playerArea.rotation = Quaternion.RotateTowards(this._playerArea.rotation, toRotation, this._rotationSpeed * Time.deltaTime);
+        }
+
+    }
+
+    public void EnableControls()
+    {
+        this._playerControls.EnableControls();
+    }
+
+    public void DisableControls()
+    {
+        this._playerControls.DisableControls();
     }
 
     void OnCollectible(Collider col)
