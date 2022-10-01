@@ -9,6 +9,8 @@ public class GullyGameManager : MonoBehaviour
     float _fakeTimer = 10;
     private GameState _currentState;
 
+    private float _timeBonus = 10; //Every 10 seconds
+
     public enum GameState
     {
         Starting,
@@ -40,7 +42,7 @@ public class GullyGameManager : MonoBehaviour
 
         if (this._fakeTimer <= 0)
         {
-            this._fakeTimer = 10;
+            this._fakeTimer = 99999;
             switch (this._currentState)
             {
                 case GameState.Starting:
@@ -54,6 +56,16 @@ public class GullyGameManager : MonoBehaviour
                     GameOver();
                     break;
             }
+        }
+    }
+
+    public void OnCollectible(GameCollectible.CollectibleType type)
+    {
+        switch (type)
+        {
+            case GameCollectible.CollectibleType.TimeBonus:
+                this._fakeTimer += this._timeBonus;
+                break;
         }
     }
 
